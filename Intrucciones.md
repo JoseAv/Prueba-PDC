@@ -16,10 +16,10 @@
 
 #### Conexion a Web
 
-- ❌ levantar react
-- ❌ zustand, react router
-- ❌ Crear Principal page
+- ✅ levantar react
+- ✅ zustand
+- ❌ Diseño
+- ❌ Crear Tablas
 - ❌ Peticiones
-- ❌ tablas
 - ❌ Responsive
 - ❔ Filtrados

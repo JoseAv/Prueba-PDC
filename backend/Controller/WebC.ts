@@ -20,7 +20,11 @@ class ControllerApiWeb {
     }
 
     static async ShowDepartamento(_: Request, res: Response): Promise<void> {
-        const result = await pool.query('SELECT * FROM departamento')
+        const result = await pool.query(`
+            SELECT d.pais, d.depto, d.nomdepto 
+            FROM Departamento d
+            JOIN Pais p ON d.pais = p.pais
+        `);
         res.json(result.rows)
     }
 
