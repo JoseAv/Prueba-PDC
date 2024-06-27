@@ -1,11 +1,14 @@
 import { Request, Response } from "express";
 import { pool } from "../db"
 import { CreateIDDepartament, CreateIDPais } from "../Services/CreateID";
-
+import { validatePais } from '../Services/Validate'
 class ControllGetApp {
 
     static async InsertPais(req: Request, res: Response): Promise<void> {
-        const { nompais } = req.body
+        let { nompais } = req.body
+        if (nompais === '') {
+            nompais = "Sin Ingresar"
+        }
         try {
             const result = await pool.query('SELECT * FROM pais')
             const id = CreateIDPais(result.rows.length)
@@ -23,11 +26,16 @@ class ControllGetApp {
 
     static async UpdatePais(req: Request, res: Response): Promise<void> {
         const { id } = req.params
-        const { nompais } = req.body
+        let { nompais } = req.body
+        if (nompais === '') {
+            nompais = "Sin Ingresar"
+        }
+
+
 
         try {
             const result = await pool.query('UPDATE pais SET nompais = $1 WHERE pais = $2 ', [nompais, id])
-            res.json(result.rows)
+            res.json({ message: 'Actualizado Pais' })
         } catch (error) {
             res.json({ message: "Fallo en la peticion" })
             return
@@ -36,15 +44,26 @@ class ControllGetApp {
 
 
     static async InsertDep(req: Request, res: Response): Promise<void> {
-        const { nomdepto, pais } = req.body
-        console.log(nomdepto, pais)
+        let { nomdepto, pais } = req.body
+        if (nomdepto === "") {
+            nomdepto = "Sin Data"
+        }
+
         try {
+
+            let comprobepais = await validatePais(pais);
+
+            if (!comprobepais) {
+                res.status(404).json({ message: "No Existe este pais" });
+                return;
+            }
+
             const result = await pool.query('SELECT * FROM departamento')
 
             const id = CreateIDDepartament(result.rows.length)
-            await pool.query('INSERT INTO departamento  (pais,depto,nomdepto) VALUES ($1,$2,$3)', [pais, id, nomdepto])
+            await pool.query('INSERT INTO departamento  (pais,depto,nomdepto) VALUES ($1,$2,$3)', [comprobepais, id, nomdepto])
 
-            res.json(result.rows)
+            res.json({ message: 'Apartamento Creado' })
         } catch (error) {
             res.json({ message: "Fallo en la peticion" }).status(404)
             return
@@ -56,11 +75,15 @@ class ControllGetApp {
 
     static async UpdateDep(req: Request, res: Response): Promise<void> {
         const { id } = req.params
-        const { nomdepto } = req.body
-        console.log(id, nomdepto)
+        let { nomdepto } = req.body
+
+        if (nomdepto === "") {
+            nomdepto = "Sin Data"
+        }
+
         try {
-            const result = await pool.query('UPDATE departamento SET nomDepto = $1 WHERE depto = $2 ', [nomdepto, id])
-            res.json(result.rows)
+            const result = await pool.query('UPDATE departamento SET nomdepto = $1 WHERE depto = $2 ', [nomdepto, id])
+            res.json({ message: 'Apartamento Actualizado' })
         } catch (error) {
             res.json({ message: "Fallo en la peticion" })
             return

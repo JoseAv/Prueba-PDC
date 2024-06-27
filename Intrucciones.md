@@ -18,8 +18,19 @@
 
 - ✅ levantar react
 - ✅ zustand
-- ❌ Diseño
-- ❌ Crear Tablas
-- ❌ Peticiones
-- ❌ Responsive
+- ✅ Diseño
+- ✅ Crear Tablas
+- ✅ Peticiones
+- ✅ Responsive
+- ❔ Filtrados
+
+
+#### Conexion a Web
+
+- ✅ Instalar Android estudio
+- ✅ zustand
+- ✅ Diseño
+- ✅ Crear Tablas
+- ✅ Peticiones
+- ✅ Responsive
 - ❔ Filtrados
