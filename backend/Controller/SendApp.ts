@@ -5,6 +5,7 @@ class ControllerAppSendData {
 
     static async SendPais(req: Request, res: Response): Promise<void> {
         const { id } = req.params
+        console.log('entro aqui')
         if (id.length < 5) {
             res.json({ message: "ID Incorrecto" })
             return
